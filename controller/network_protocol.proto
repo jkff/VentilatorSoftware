@@ -1,0 +1,84 @@
+syntax = "proto2";
+
+
+enum ControllerMsgType 
+{
+    ACK = 			0x10;
+    ERR_CHECK_SUM = 0x11;
+    ERR_MODE = 		0x12;
+    ERR_CMD = 		0x13;
+    STATUS = 		0x20;
+    ALARM = 		0x30;
+    DATA = 			0x40;
+}
+
+enum CommandType
+{
+	SET_RR = 0x00;
+	GET_RR = 0x01;
+	SET_TV = 0x02;
+	GET_TV = 0x03;
+	SET_PEEP = 0x04;
+	GET_PEEP = 0x05;
+	SET_PIP = 0x06;
+	GET_PIP = 0x07;
+	SET_DWELL = 0x08;
+	GET_DWELL = 0x09;
+	SET_IR = 0x0a;
+	GET_IR = 0x0b;
+	
+	GET_PRESSURE = 0x0c;
+	GET_FLOW = 0x0d;
+	GET_VOLUME = 0x0e;
+
+	SET_KP = 0x20;
+	GET_KP = 0x21;
+	SET_KI = 0x22;
+	GET_KI = 0x23;
+	SET_KD = 0x24;
+	GET_KD = 0x25;
+	SET_BLOWER = 0x26;
+	RESET = 0x27;
+	SET_SOLENOID = 0x28;
+
+	SET_TX_RATE = 0x40;
+	GET_TX_RATE = 0x41;
+	SET_CONTROLLER_MODE = 0x42;
+	GET_CONTROLLER_MODE = 0x43;
+	COMM_CHECK = 0x44;
+	SET_VENTILATOR_MODE = 0x45;
+	GET_VENTILATOR_MODE = 0x46;
+	START_VENTILATOR = 0x47;
+	STOP_VENTILATOR = 0x48;
+}
+
+message CommandPacket
+{
+    required CommandType cmd = 1;
+    optional uint32 data = 2;
+    required uint32 checksum = 3;
+}
+
+message GuiAckPacket
+{
+	required uint32 type = 1;
+	required uint32 checksum = 2;
+}
+
+message ControllerDataPacket
+{
+	required ControllerMsgType msg_type = 1;
+	required uint32 data_id = 2;
+	required bytes data = 3;
+    required uint32 checksum = 4;
+}
+
+message Packet
+{
+	oneof payload {
+	    CommandPacket cmd = 1;
+	    GuiAckPacket gui_ack = 2;
+	    ControllerDataPacket data = 3;
+	}
+}
+
