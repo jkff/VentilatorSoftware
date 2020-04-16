@@ -15,6 +15,11 @@ addons:
 
 # TODO: Separate jobs for GUI and controller?
 script:
+  # Tests that controller unit tests pass on native
+  - platformio test -e native
+	# Tests that controller can be built for the target platform
+	- platformio run
+	# Tests that the GUI builds
   - cd gui
   - mkdir build
   - cd build
