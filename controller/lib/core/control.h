@@ -15,10 +15,9 @@ limitations under the License.
 #ifndef CONTROL_H
 #define CONTROL_H
 
-#include <PID_v1.h>
-
 #include "hal.h"
 #include "network_protocol.pb.h"
+#include "pid.h"
 
 inline constexpr AnalogPinId DPSENSOR_PIN = AnalogPinId::HAL_A5;
 inline constexpr PwmPinId BLOWERSPD_PIN = PwmPinId::PWM_6;
@@ -43,6 +42,9 @@ inline constexpr int EXPIRE_DWELL = 600;
 inline constexpr int AC = 0;
 inline constexpr int RR = 0;
 inline constexpr int IE = 0;
+
+// TODO: move this into a mathematical library
+long map(long x, long in_min, long in_max, long out_min, long out_max);
 
 void pid_init();
 
